@@ -4,7 +4,7 @@
 //
 //  Created by Fulya Sarıyar on 18.06.2022.
 //
-
+ import UIKit
 
 class ViewController: UIViewController {
     //variables

@@ -14,6 +14,8 @@ class ViewController: UIViewController {
     var score = 0
     var timer = Timer()
     var counter = 0
+    var kennyArray = [UIImageView]()
+    var hideTimer = Timer()
     
    //Views
     
@@ -69,6 +71,9 @@ class ViewController: UIViewController {
         kenny8.addGestureRecognizer(recognizer8)
         kenny9.addGestureRecognizer(recognizer9)
         
+        kennyArray = [kenny1, kenny2, kenny3, kenny4, kenny5, kenny6, kenny7, kenny8, kenny9]
+        
+        
         
         //Timers
         counter = 10
@@ -76,8 +81,23 @@ class ViewController: UIViewController {
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
         
+        hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(hideKenny), userInfo: nil, repeats: true)
+        
+        hideKenny()
+    }
+    
+     @objc func hideKenny(){
+        //kenny1.isHidden = true kennyleri görünmez hale getirdik
+        for kenny in kennyArray{
+            kenny.isHidden = true
+        }
+        
+       let random = Int(arc4random_uniform(UInt32(kennyArray.count-1))) // rastgele kenny
+       kennyArray[random].isHidden = false
         
     }
+    
+    
     @objc func increaseScore(){
         score += 1
         scoreLabel.text = "Score: \(score)" //scoru güncellemek
@@ -90,6 +110,7 @@ class ViewController: UIViewController {
         
         if counter == 0{
             timer.invalidate()
+            hideTimer.invalidate()
             
             
             //Alert

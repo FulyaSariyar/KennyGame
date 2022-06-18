@@ -5,7 +5,6 @@
 //  Created by Fulya Sarıyar on 18.06.2022.
 //
 
-import UIKit
 
 import UIKit
 
@@ -16,6 +15,7 @@ class ViewController: UIViewController {
     var counter = 0
     var kennyArray = [UIImageView]()
     var hideTimer = Timer()
+    var highScore = 0
     
    //Views
     
@@ -38,6 +38,20 @@ class ViewController: UIViewController {
         
         scoreLabel.text = "Score: \(score)"
          
+        //highscore check
+        let storedHighScore = UserDefaults.standard.object(forKey: "highscore")
+        if storedHighScore == nil{
+            highScore = 0
+            highscoreLabel.text = "HighScore: \(highScore)"
+        }
+        if let newScore = storedHighScore as? Int{
+            highScore = newScore
+            highscoreLabel.text = "Highscore: \(highScore)"
+        }
+        
+        
+        
+        
         //images
         
         kenny1.isUserInteractionEnabled = true //kennynin üzerine tıklanmasını etkin hale getirir
@@ -76,7 +90,7 @@ class ViewController: UIViewController {
         
         
         //Timers
-        counter = 10
+        counter = 30
         timeLabel.text = "\(counter)" //String(counter)
         
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(countDown), userInfo: nil, repeats: true)
@@ -112,6 +126,17 @@ class ViewController: UIViewController {
             timer.invalidate()
             hideTimer.invalidate()
             
+            //HighScore
+            
+            if self.score > self.highScore{
+                self.highScore = self.score
+                highscoreLabel.text = "Highscore \(self.highScore)"
+                UserDefaults.standard.set(self.highScore, forKey: "highscore")
+                
+            }
+            
+            
+            
             
             //Alert
             let alert = UIAlertController(title: "Time's Up", message: "Do you want to play again", preferredStyle: UIAlertController.Style.alert)
@@ -120,7 +145,15 @@ class ViewController: UIViewController {
             let replayButton = UIAlertAction(title: "Replay", style: UIAlertAction.Style.default)  {
                 (UIAlertAction)  in
                 //replay function
-                
+                // self = C# this
+                                
+            self.score = 0
+            self.scoreLabel.text = "Score: \(self.score)"
+            self.counter = 10
+            self.timeLabel.text = String (self.counter)
+
+            self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.countDown), userInfo: nil, repeats: true)
+            self.hideTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.hideKenny), userInfo: nil, repeats: true)
             }
             alert.addAction(okButton)
             alert.addAction(replayButton)

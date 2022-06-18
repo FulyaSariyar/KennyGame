@@ -7,8 +7,6 @@
 
 import UIKit
 
-import UIKit
-
 class ViewController: UIViewController {
     //variables
     var score = 0
